@@ -6,7 +6,7 @@ using TriangleApp;
 namespace Test
 {
     [TestClass]
-    public class UnitTest1
+    public class TriangleUnitTest
     {
         [TestMethod]
         public void IsRightTriangle()
