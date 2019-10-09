@@ -1,0 +1,6 @@
+C:\Users\User\Desktop\TriangleApp\TriangleApp\bin\Debug\TriangleApp.dll
+C:\Users\User\Desktop\TriangleApp\TriangleApp\bin\Debug\TriangleApp.pdb
+C:\Users\User\Desktop\TriangleApp\TriangleApp\obj\Debug\TriangleApp.csprojAssemblyReference.cache
+C:\Users\User\Desktop\TriangleApp\TriangleApp\obj\Debug\TriangleApp.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\TriangleApp\TriangleApp\obj\Debug\TriangleApp.dll
+C:\Users\User\Desktop\TriangleApp\TriangleApp\obj\Debug\TriangleApp.pdb
