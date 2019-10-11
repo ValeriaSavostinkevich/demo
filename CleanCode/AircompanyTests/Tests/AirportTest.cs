@@ -10,7 +10,7 @@ namespace AircompanyTests.Tests
     [TestFixture]
     public class AirportTest
     {
-        private List<Plane> planes = new List<Plane>(){
+        public static List<Plane> planes = new List<Plane>(){
            new PassengerPlane("Boeing-737", 900, 12000, 60500, 164),
            new PassengerPlane("Boeing-737-800", 940, 12300, 63870, 192),
            new PassengerPlane("Boeing-747", 980, 16100, 70500, 242),
@@ -28,7 +28,7 @@ namespace AircompanyTests.Tests
    };
 
         private PassengerPlane planeWithMaxPassengerCapacity = new PassengerPlane("Boeing-747", 980, 16100, 70500, 242);
-        private Airport airport = new Airport(planes);
+        public Airport airport = new Airport(planes);
 
         public bool HasMilitaryTransportPlane()
         {
@@ -45,9 +45,10 @@ namespace AircompanyTests.Tests
 
         public bool IsSortByMaxLoadCapacityCorrect()
         {
-            for (int i = 0; i < airport.SortByMaxLoadCapacity().GetPlanes().ToList().Count - 1; i++)
+            List<Plane> planesSortedByMaxLoadCapacity = airport.SortByMaxLoadCapacity().GetPlanes().ToList();
+            for (int i = 0; i < planesSortedByMaxLoadCapacity.Count - 1; i++)
             {
-                if (planesSortedByMaxLoadCapacity[i].MAXLoadCapacity() > planesSortedByMaxLoadCapacity[i + 1].MAXLoadCapacity())
+                if (planesSortedByMaxLoadCapacity[i].GetMaxLoadCapacity() > planesSortedByMaxLoadCapacity[i + 1].GetMaxLoadCapacity())
                 {
                     return false;
                 }
