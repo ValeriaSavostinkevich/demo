@@ -15,7 +15,7 @@ namespace SeleniumTests
         {
             webDriver = new ChromeDriver();
             webDriver.Manage().Window.Maximize();
-            webDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(200);
+            webDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(60);
             webDriver.Navigate().GoToUrl("https://www.americanairlines.com.ru/");
         }
 

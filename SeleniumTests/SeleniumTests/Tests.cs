@@ -31,12 +31,10 @@ namespace SeleniumTests
 
             var departureCity = GetWebElementById("reservationFlightSearchForm.originAirport");
             departureCity.SendKeys(departureCityText);
-            Thread.Sleep(1000);
             var searchButton = GetWebElementById("bookingModule-submit");
             searchButton.Click();
             var errorMessage = GetWebElementByXPath("//li[@class = 'errorMessage']");
             string error = errorMessage.Text;
-            Thread.Sleep(2000);
             Assert.AreEqual(ErrorTextForEmptyString, error);
         }
 
@@ -66,19 +64,18 @@ namespace SeleniumTests
 
             var firstName = GetWebElementById("retr-firstName");
             firstName.SendKeys(firstNameText);
-            Thread.Sleep(1000);
+
             var lastName = GetWebElementById("retr-lastName");
             lastName.SendKeys(lastNameText);
-            Thread.Sleep(1000);
+
             var reservationNumber = GetWebElementById("retr-recordLocator");
             reservationNumber.SendKeys(reservationNumberText);
-            Thread.Sleep(1000);
+
             var searchButton = GetWebElementById("prs-submit");
             searchButton.Click();
 
             var errorMessage = GetWebElementByXPath("//li[@class = 'errorMessage']");
             string error = errorMessage.Text;
-            Thread.Sleep(2000);
             Assert.AreEqual(ErrorTextForTheWrongReservationNumber, error);
         }
     }
