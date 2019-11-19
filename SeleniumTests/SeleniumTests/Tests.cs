@@ -5,10 +5,10 @@ using NUnit.Framework;
 namespace SeleniumTests
 {
     [TestFixture]
-    public class Tests : BrouserBaseFunction
+    public class Tests : BrowserBaseFunction
     {
         private const string ErrorTextForEmptyString =
-            "Укажите город возвращения и повторите попытку.";
+            "Arrival city/airport is required.";
 
         private const string ErrorTextForTheWrongReservationNumber =
             "Введите действительный шестизначный номер бронирования.";
@@ -23,19 +23,22 @@ namespace SeleniumTests
         [Test]
         public void SearchWithoutEnteringTheCityOfArrival()
         {
-            #region TestData
-
             const string departureCityText = "MSQ";
 
-            #endregion
+            GetWebElementById("reservationFlightSearchForm.originAirport").SendKeys(departureCityText);
+            GetWebElementById("aa-leavingOn").SendKeys("11/04/2019");
+            GetWebElementById("aa-returningFrom").SendKeys("11/05/2019");
 
-            var departureCity = GetWebElementById("reservationFlightSearchForm.originAirport");
-            departureCity.SendKeys(departureCityText);
-            var searchButton = GetWebElementById("bookingModule-submit");
-            searchButton.Click();
-            var errorMessage = GetWebElementByXPath("//li[@class = 'errorMessage']");
-            string error = errorMessage.Text;
-            Assert.AreEqual(ErrorTextForEmptyString, error);
+            GetWebElementById("flightSearchForm.button.reSubmit").Click();
+
+            //string error = GetWebElementById("segments0.destination.errors").Text;
+            //Assert.AreEqual(ErrorTextForEmptyString, error);
+
+            if (GetUrl().Equals("https://www.aa.com/booking/find-flights"))
+            {
+                string error = GetWebElementById("segments0.destination.errors").Text;
+                Assert.AreEqual(ErrorTextForEmptyString, error);
+            }
         }
 
         //Ввод несуществующего номера резервации при просмотре вкладки "Мои перелёты"
@@ -50,32 +53,22 @@ namespace SeleniumTests
         [Test]
         public void SearchWithWrongReservationNumber()
         {
-
-            #region TestData
-
             const string firstNameText = "Jane";
             const string lastNameText = "Fox";
             const string reservationNumberText = "123456";
 
-            #endregion
+            GetWebElementById("jq-myTripsCheckIn").Click();
 
-            var myTripsCheckIn = GetWebElementById("jq-myTripsCheckIn");
-            myTripsCheckIn.Click();
+            GetWebElementById("retr-firstName").SendKeys(firstNameText);
+   
+            GetWebElementById("retr-lastName").SendKeys(lastNameText);
 
-            var firstName = GetWebElementById("retr-firstName");
-            firstName.SendKeys(firstNameText);
+            GetWebElementById("retr-recordLocator").SendKeys(reservationNumberText);
 
-            var lastName = GetWebElementById("retr-lastName");
-            lastName.SendKeys(lastNameText);
+            GetWebElementById("prs-submit").Click();
 
-            var reservationNumber = GetWebElementById("retr-recordLocator");
-            reservationNumber.SendKeys(reservationNumberText);
-
-            var searchButton = GetWebElementById("prs-submit");
-            searchButton.Click();
-
-            var errorMessage = GetWebElementByXPath("//li[@class = 'errorMessage']");
-            string error = errorMessage.Text;
+            string error = GetWebElementByXPath("//li[@class = 'errorMessage']").Text;
+         
             Assert.AreEqual(ErrorTextForTheWrongReservationNumber, error);
         }
     }
