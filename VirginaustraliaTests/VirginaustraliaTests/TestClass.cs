@@ -71,7 +71,7 @@ namespace VirginaustraliaTests
         }
 
         [Test]
-        public void Test()
+        public void EqualPreliminaryAndCurrentPrice()
         {
             HomePage homePage = new HomePage(driver);
             homePage.CookieAcceptClick();
