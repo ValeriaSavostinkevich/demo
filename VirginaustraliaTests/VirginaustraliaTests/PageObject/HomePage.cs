@@ -31,6 +31,12 @@ namespace VirginaustraliaTests.PageObject
 
         [FindsBy(How = How.XPath, Using = "//input[@id = 'flights-manage-pnr']")]
         private IWebElement FlightsManageBookingReference;
+        
+        [FindsBy(How = How.XPath, Using = "//input[@id = 'flights-originSurrogate']")]
+        private IWebElement FlightsOriginSurrogate;
+
+        [FindsBy(How = How.XPath, Using = "//input[@id = 'flights-destinationSurrogate']")]
+        private IWebElement FlightsDestinationSurrogate;
 
         [FindsBy(How = How.XPath, Using = "//input[@value = 'RETRIEVE']")]
         private IWebElement RetrieveButtonOnMyBookings;
@@ -49,7 +55,6 @@ namespace VirginaustraliaTests.PageObject
 
         [FindsBy(How = How.XPath, Using = "//a[contains(., 'Planning')]")]
         private IWebElement PlanningButton;
-
 
         public HomePage(IWebDriver driver)
         {
@@ -76,10 +81,10 @@ namespace VirginaustraliaTests.PageObject
             return this;
         }
 
-        public HomePage FindFlightsButtonClick()
+        public SelectFlightsPage FindFlightsButtonClick()
         {
             FindFlightsButton.Click();
-            return this;
+            return new SelectFlightsPage(Driver);
         }
 
         public string GetPageDialogText()
@@ -100,6 +105,19 @@ namespace VirginaustraliaTests.PageObject
             return this;
         }
 
+        public HomePage InputOriginSurrogate(string originSurrogate)
+        {
+            FlightsOriginSurrogate.Clear();
+            FlightsOriginSurrogate.SendKeys(originSurrogate);
+            return this;
+        }
+
+        public HomePage InputDestinationSurrogate(string destinationSurrogate)
+        {
+            FlightsDestinationSurrogate.SendKeys(destinationSurrogate);
+            return this;
+        }
+
         public HomePage OneWayRadioButtonClick()
         {
             OneWayRadioButton.Click();
@@ -117,7 +135,7 @@ namespace VirginaustraliaTests.PageObject
             return this;
         }
 
-        public HomePage IncInfantsClick()
+        public HomePage IncrementInfantsClick()
         {
             IncrementInfants.Click();
             return this;
