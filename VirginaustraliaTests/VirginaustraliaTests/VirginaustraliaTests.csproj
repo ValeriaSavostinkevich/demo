@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="PageObject\BookAFlightPage.cs" />
     <Compile Include="PageObject\HomePage.cs" />
+    <Compile Include="PageObject\PlanningPage.cs" />
     <Compile Include="PageObject\SelectFlightsPage.cs" />
     <Compile Include="TestClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

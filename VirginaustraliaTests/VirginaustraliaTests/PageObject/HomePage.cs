@@ -8,92 +8,124 @@ using OpenQA.Selenium.Support.UI;
 
 namespace VirginaustraliaTests.PageObject
 {
-    class HomePage
+    public class HomePage
     {
-        private IWebDriver driver;
+        private IWebDriver Driver;
 
-        private readonly string url = "https://www.virginaustralia.com/eu/en/";
+        private readonly string Url = "https://www.virginaustralia.com/eu/en/";
 
         [FindsBy(How = How.XPath, Using = "//button[@id = 'cookieAcceptButton']")]
-        IWebElement CookieAcceptButton { get; set; }
+        private IWebElement CookieAcceptButton;
 
         [FindsBy(How = How.XPath, Using = "//input[@id = 'flights-submit']")]
-        IWebElement FindFlightsButton { get; set; }
+        private IWebElement FindFlightsButton;
 
         [FindsBy(How = How.XPath, Using = "//*[@id='page-dialog']/div/ul/li")]
-        IWebElement PageDialog { get; set; }
+        private IWebElement PageDialog;
 
         [FindsBy(How = How.XPath, Using = "//dt[contains(., 'My bookings')]")]
-        IWebElement MyBookings { get; set; }
+        private IWebElement MyBookings;
 
         [FindsBy(How = How.XPath, Using = "//input[@id = 'flights-manage-last-name']")]
-        IWebElement FlightsManageLastName { get; set; }
+        private IWebElement FlightsManageLastName;
 
         [FindsBy(How = How.XPath, Using = "//input[@id = 'flights-manage-pnr']")]
-        IWebElement FlightsManageBookingReference { get; set; }
+        private IWebElement FlightsManageBookingReference;
 
         [FindsBy(How = How.XPath, Using = "//input[@value = 'RETRIEVE']")]
-        IWebElement RetrieveButtonOnMyBookings { get; set; }
+        private IWebElement RetrieveButtonOnMyBookings;
 
         [FindsBy(How = How.XPath, Using = "//label[contains(., 'One Way')]")]
-        IWebElement OneWayRadioButton { get; set; }
+        private IWebElement OneWayRadioButton;
 
         [FindsBy(How = How.XPath, Using = "//input[@id = 'flights-return-date']")]
-        IWebElement FlightsReturnDate { get; set; }
+        private IWebElement FlightsReturnDate;
 
         [FindsBy(How = How.XPath, Using = "//span[@id = 'label_fake-adult-input']")]
-        IWebElement CustomFormSelect { get; set; }
+        private IWebElement CustomFormSelect;
 
         [FindsBy(How = How.XPath, Using = "//*[@id='incInfants']/img")]
-        IWebElement IncInfants { get; set; }
+        private IWebElement IncrementInfants;
 
-        [FindsBy(How = How.XPath, Using = "//a[contains(., 'Book a flight')]")]
-        IWebElement BookAFlightButton { get; set; }
+        [FindsBy(How = How.XPath, Using = "//a[contains(., 'Planning')]")]
+        private IWebElement PlanningButton;
+
 
         public HomePage(IWebDriver driver)
         {
-            this.driver = driver;
+            this.Driver = driver;
             PageFactory.InitElements(driver, this);
-            driver.Navigate().GoToUrl(url);
+            driver.Navigate().GoToUrl(Url);
         }
 
-        public BookAFlightPage goToBookAFlightPage()
+        public HomePage CookieAcceptClick()
         {
             CookieAcceptButton.Click();
-            BookAFlightButton.Click();
-            return new BookAFlightPage(driver);
+            return this;
         }
 
-        public string SearchWithoutEnteringInformation()
+        public PlanningPage GoToPlanningPage()
         {
-            CookieAcceptButton.Click();
+            PlanningButton.Click();
+            return new PlanningPage(Driver);
+        }
+
+        public HomePage GoToMyBooking()
+        {
+            MyBookings.Click();
+            return this;
+        }
+
+        public HomePage FindFlightsButtonClick()
+        {
             FindFlightsButton.Click();
+            return this;
+        }
+
+        public string GetPageDialogText()
+        {
             return PageDialog.Text;
         }
 
-        public string SearchByEnteringTheWrongBookingReference(string lastName, string bookingReference)
+        public HomePage RetrieveButtonOnMyBookingsClick()
         {
-            CookieAcceptButton.Click();
-            MyBookings.Click();
+            RetrieveButtonOnMyBookings.Click();
+            return this;
+        }
+
+        public HomePage InputLastNameAndBookingReference(string lastName, string bookingReference)
+        {
             FlightsManageLastName.SendKeys(lastName);
             FlightsManageBookingReference.SendKeys(bookingReference);
-            RetrieveButtonOnMyBookings.Click();
-            return PageDialog.Text;
+            return this;
         }
 
-        public bool FlightsReturnDateIsNotEnabledWhenSearchBookFlightsOnTheOneWay()
+        public HomePage OneWayRadioButtonClick()
         {
-            CookieAcceptButton.Click();
             OneWayRadioButton.Click();
+            return this;
+        }
+
+        public bool FlightsReturnDateIsEnabled()
+        {
             return FlightsReturnDate.Enabled;
         }
 
-        public string OneInfantPerOneAdult()
+        public HomePage CustomFormSelectClick()
         {
-            CookieAcceptButton.Click();
             CustomFormSelect.Click();
-            IncInfants.Click();
-            return IncInfants.GetAttribute("style");
+            return this;
+        }
+
+        public HomePage IncInfantsClick()
+        {
+            IncrementInfants.Click();
+            return this;
+        }
+
+        public string GetAttributeButtonInfants()
+        {
+            return IncrementInfants.GetAttribute("style");
         }
     }
 }

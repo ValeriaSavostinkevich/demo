@@ -8,7 +8,7 @@ using VirginaustraliaTests.PageObject;
 
 namespace VirginaustraliaTests
 {
-    class TestClass
+    public class TestClass
     {
         private IWebDriver driver;
 
@@ -19,52 +19,71 @@ namespace VirginaustraliaTests
             "Please enter a valid reservation number.";
 
         [SetUp]
-        public void OpenBrouser()
+        public void OpenBrowser()
         {
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(120);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(60);
         }
 
         [Test]
         public void SearchWithoutEnteringInformationTest()
         {
             HomePage homePage = new HomePage(driver);
-            Assert.AreEqual(homePage.SearchWithoutEnteringInformation(), ErrorTextForSearchWithoutEnteringInformation);
+            homePage.CookieAcceptClick();
+            homePage.FindFlightsButtonClick();
+            Assert.AreEqual(homePage.GetPageDialogText(), ErrorTextForSearchWithoutEnteringInformation);
         }
 
         [Test]
         public void SearchByEnteringTheWrongBookingReferenceTest()
         {
             HomePage homePage = new HomePage(driver);
-            Assert.AreEqual(homePage.SearchByEnteringTheWrongBookingReference("Savostinkevich", "123456"), ErrorTextForSearchByEnteringTheWrongBookingReference);
+            homePage.CookieAcceptClick();
+            homePage.GoToMyBooking();
+            homePage.InputLastNameAndBookingReference("Savostinkevich", "123456");
+            homePage.RetrieveButtonOnMyBookingsClick();
+            Assert.AreEqual(homePage.GetPageDialogText(), 
+                            ErrorTextForSearchByEnteringTheWrongBookingReference);
         }
 
         [Test]
         public void FlightsReturnDateIsNotEnabledWhenSearchBookFlightsOnTheOneWay()
         {
             HomePage homePage = new HomePage(driver);
-            Assert.IsFalse(homePage.FlightsReturnDateIsNotEnabledWhenSearchBookFlightsOnTheOneWay());
+            homePage.CookieAcceptClick();
+            homePage.OneWayRadioButtonClick();
+            Assert.IsFalse(homePage.FlightsReturnDateIsEnabled());
         }
 
         [Test]
         public void OneInfantPerOneAdultTest()
         {
             HomePage homePage = new HomePage(driver);
-            Assert.AreEqual(homePage.OneInfantPerOneAdult(), "cursor: default;");
+            homePage.CookieAcceptClick();
+            homePage.CustomFormSelectClick();
+            homePage.IncInfantsClick();
+            Assert.AreEqual(homePage.GetAttributeButtonInfants(), "cursor: default;");
         }
 
         [Test]
         public void Test()
         {
             HomePage homePage = new HomePage(driver);
-            BookAFlightPage bookAFlightPage = homePage.goToBookAFlightPage();
-            SelectFlightsPage selectFlightsPage = bookAFlightPage.FindTickets("Brisbane (BNE)", "Adelaide (ADL)");
+            homePage.CookieAcceptClick();
+            PlanningPage planningPage = homePage.GoToPlanningPage();
+            BookAFlightPage bookAFlightPage = planningPage.GoToBookAFlightPage();
+            bookAFlightPage.InputFlightsOriginAndDestinationSurrogate("Brisbane (BNE)", "Adelaide (ADL)");
+            bookAFlightPage.OneWayRadioButtonClick();
+            SelectFlightsPage selectFlightsPage = bookAFlightPage.FindFlightsButtonClick();
+            selectFlightsPage.SelectFlightClick();
+            selectFlightsPage.SelectPriceClick();
+            selectFlightsPage.ContinueButtonClick();
             Assert.AreEqual(selectFlightsPage.GetPreliminaryPrice(), selectFlightsPage.GetCurrentPrice());
         }
 
         [TearDown]
-        public void CloseBrouser()
+        public void CloseBrowser()
         {
             driver.Quit();
             driver.Dispose();
