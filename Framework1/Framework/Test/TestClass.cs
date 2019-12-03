@@ -75,11 +75,6 @@ namespace Framework.Test
                 homePage.InputDestinationSurrogate(route.DestinationSurrogate);
                 homePage.OneWayRadioButtonClick();
                 SelectFlightsPage selectFlightsPage = homePage.FindFlightsButtonClick();
-                // PlanningPage planningPage = homePage.GoToPlanningPage();
-                // BookAFlightPage bookAFlightPage = planningPage.GoToBookAFlightPage();
-                // bookAFlightPage.InputFlightsOriginAndDestinationSurrogate();
-                // bookAFlightPage.OneWayRadioButtonClick();
-                //bookAFlightPage.FindFlightsButtonClick();
                 selectFlightsPage.SelectFlightClick();
                 selectFlightsPage.SelectPriceClick();
                 selectFlightsPage.ContinueButtonClick();

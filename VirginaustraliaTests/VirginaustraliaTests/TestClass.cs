@@ -79,11 +79,6 @@ namespace VirginaustraliaTests
             homePage.InputDestinationSurrogate("Adelaide (ADL)");
             homePage.OneWayRadioButtonClick();
             SelectFlightsPage selectFlightsPage = homePage.FindFlightsButtonClick();
-           // PlanningPage planningPage = homePage.GoToPlanningPage();
-           // BookAFlightPage bookAFlightPage = planningPage.GoToBookAFlightPage();
-           // bookAFlightPage.InputFlightsOriginAndDestinationSurrogate();
-           // bookAFlightPage.OneWayRadioButtonClick();
-           //bookAFlightPage.FindFlightsButtonClick();
             selectFlightsPage.SelectFlightClick();
             selectFlightsPage.SelectPriceClick();
             selectFlightsPage.ContinueButtonClick();
