@@ -5,6 +5,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
+using Framework.Models;
 
 namespace Framework.PageObject
 {
@@ -12,9 +13,6 @@ namespace Framework.PageObject
     {
         private IWebDriver Driver;
         private WebDriverWait Wait;
-
-        //[FindsBy(How = How.XPath, Using = "//label[contains(., 'One Way')]")]
-        //private IWebElement OneWayRadioButton;
 
         [FindsBy(How = How.XPath, Using = "//input[@id = 'flights-originSurrogate']")]
         private IWebElement FlightsOriginSurrogate;
@@ -35,10 +33,11 @@ namespace Framework.PageObject
             PageFactory.InitElements(driver, this);
         }
         
-        public BookAFlightPage InputFlightsOriginAndDestinationSurrogate(string originSurrogate, string destinationSurrogate)
+        public BookAFlightPage InputFlightsOriginAndDestinationSurrogate(Route route)
         {
-            FlightsOriginSurrogate.SendKeys(originSurrogate);
-            FlightsDestinationSurrogate.SendKeys(destinationSurrogate);
+            FlightsOriginSurrogate.Clear();
+            FlightsOriginSurrogate.SendKeys(route.OriginSurrogate);
+            FlightsDestinationSurrogate.SendKeys(route.DestinationSurrogate);
             return this;
         }
 

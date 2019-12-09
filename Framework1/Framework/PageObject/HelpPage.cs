@@ -8,28 +8,19 @@ using OpenQA.Selenium.Support.UI;
 
 namespace Framework.PageObject
 {
-    public class PlanningPage
+    public class HelpPage
     {
         private IWebDriver Driver;
         private WebDriverWait Wait;
 
-        [FindsBy(How = How.XPath, Using = " //li[@id = 'tln-nav-1071']")]
-        private IWebElement BookAFlightButton;
-
-        public PlanningPage(IWebDriver driver)
+        public HelpPage(IWebDriver driver)
         {
             this.Driver = driver;
             Wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
             PageFactory.InitElements(driver, this);
         }
 
-        public BookAFlightPage GoToBookAFlightPage()
-        {
-            BookAFlightButton.Click();
-            return new BookAFlightPage(Driver);
-        }
-
-        public string GetUrl()
+        public string GetUrlHelpPage()
         {
             return this.Driver.Url;
         }

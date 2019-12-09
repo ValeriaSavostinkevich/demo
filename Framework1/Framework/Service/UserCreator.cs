@@ -9,10 +9,17 @@ namespace Framework.Service
 {
     public class UserCreator
     {
-        public User WithAllProperties()
+        public User LastNameAndBookingReferenceProperties()
         {
             return new User(TestDataReader.GetData("LastName"), 
                             TestDataReader.GetData("BookingReference"));
+        }
+
+        public User LastNameVelocityNumberAndPasswordProperties()
+        {
+            return new User(TestDataReader.GetData("LastName"),
+                            TestDataReader.GetData("VelocityNumber"),
+                            TestDataReader.GetData("Password"));
         }
     }
 }

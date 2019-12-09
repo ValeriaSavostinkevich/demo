@@ -8,6 +8,7 @@ using Framework.PageObject;
 using Framework.Test;
 using Framework.Service;
 using Framework.Models;
+using log4net;
 
 namespace Framework.Test
 {
@@ -19,6 +20,18 @@ namespace Framework.Test
         const string ErrorTextForSearchByEnteringTheWrongBookingReference =
             "Please enter a valid reservation number.";
 
+        const string ErrorTextForCheckFlight =
+            "Invalid flight number. Ensure it contains numbers only. For example, 123.";
+
+        const string ErrorTextForCheckIn =
+            "Please select your departure city";
+
+        const string HelpPageUrl = "https://www.virginaustralia.com/eu/en/help/";
+
+        const string PlanningPageUrl = "https://www.virginaustralia.com/eu/en/plan/";
+
+        static private ILog Log = LogManager.GetLogger(typeof(TestClass));
+
         [Test]
         public void SearchWithoutEnteringInformationTest()
         {
@@ -26,6 +39,7 @@ namespace Framework.Test
             SelectFlightsPage selectFlightsPage =  homePage
                 .CookieAcceptClick()
                 .FindFlightsButtonClick();
+            Log.Info("CookieAcceptClick");
             Assert.AreEqual(homePage.GetPageDialogText(), ErrorTextForSearchWithoutEnteringInformation);
         }
 
@@ -36,7 +50,7 @@ namespace Framework.Test
             string PageDialogText = new HomePage(Driver)
                 .CookieAcceptClick()
                 .GoToMyBooking()
-                .InputLastNameAndBookingReference(userCreator.WithAllProperties())
+                .InputLastNameAndBookingReference(userCreator.LastNameAndBookingReferenceProperties())
                 .RetrieveButtonOnMyBookingsClick()
                 .GetPageDialogText();
             Assert.AreEqual(PageDialogText, 
@@ -64,22 +78,80 @@ namespace Framework.Test
         }
 
         [Test]
+        public void CheckHelpPage()
+        {
+            HelpPage helpPage = new HomePage(Driver)
+                .CookieAcceptClick()
+                .GoToHelpPage();
+            Assert.AreEqual(helpPage.GetUrlHelpPage(), HelpPageUrl);
+        }
+
+        [Test]
+        public void CheckPlanningPage()
+        {
+            PlanningPage planningPage = new HomePage(Driver)
+                .CookieAcceptClick()
+                .GoToPlanningPage();
+
+            Log.Info("ChecklPlanningPage");
+
+            Assert.AreNotEqual(planningPage.GetUrl(), PlanningPageUrl);
+        }
+
+        [Test]
+        public void CheckFlightStatusWithoutInputInformation()
+        {
+            string PageDialogText = new HomePage(Driver)
+                .CookieAcceptClick()
+                .GoToFlightStatus()
+                .CheckFlightsButtonClick()
+                .GetPageDialogText();
+            Assert.AreEqual(PageDialogText, ErrorTextForCheckFlight);
+        }
+
+        [Test]
+        public void SearchByEnteringTheWrongInformationInCheckIn()
+        {
+            UserCreator userCreator = new UserCreator();
+            RouteCreator route = new RouteCreator();
+            HomePage home = new HomePage(Driver)
+                .CookieAcceptClick()
+                .GoToCheckIn()
+                .InputLastNameBookingReferenceAndOriginSurrogateCheckIn(userCreator.LastNameAndBookingReferenceProperties(), route.WithAllProperties())
+                .CheckInButtonClick();
+
+            string PageDialogText = home.GetAttributeErrorForm();
+            Assert.AreEqual(PageDialogText, "display: block;");
+        }
+
+        [Test]
+        public void LogInWithIncorrectInformation()
+        {
+            UserCreator userCreator = new UserCreator();
+            bool enabledErrorForm = new HomePage(Driver)
+                .CookieAcceptClick()
+                .GoToLogInPage()
+                .InputVelocityNumberAndBookingReference(userCreator.LastNameVelocityNumberAndPasswordProperties())
+                .LogInButtonClick()
+                .ErrorFormIsEnabled();
+            Assert.IsTrue(enabledErrorForm);
+        }
+
+        [Test]
         public void EqualPreliminaryAndCurrentPrice()
         {
-            MakeScreenshotWhenFail(() =>
-            {
                 Route route = new RouteCreator().WithAllProperties();
                 HomePage homePage = new HomePage(Driver);
                 homePage.CookieAcceptClick();
-                homePage.InputOriginSurrogate(route.OriginSurrogate);
-                homePage.InputDestinationSurrogate(route.DestinationSurrogate);
-                homePage.OneWayRadioButtonClick();
-                SelectFlightsPage selectFlightsPage = homePage.FindFlightsButtonClick();
+                PlanningPage planningPage = homePage.GoToPlanningPage();
+                BookAFlightPage bookAFlightPage =  planningPage.GoToBookAFlightPage();
+                bookAFlightPage.InputFlightsOriginAndDestinationSurrogate(route);
+                bookAFlightPage.OneWayRadioButtonClick();
+                SelectFlightsPage selectFlightsPage = bookAFlightPage.FindFlightsButtonClick();
                 selectFlightsPage.SelectFlightClick();
                 selectFlightsPage.SelectPriceClick();
                 selectFlightsPage.ContinueButtonClick();
                 Assert.AreEqual(selectFlightsPage.GetPreliminaryPrice(), selectFlightsPage.GetCurrentPrice());
-            });
         }
     }
 }
