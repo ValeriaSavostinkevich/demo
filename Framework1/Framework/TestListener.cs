@@ -24,7 +24,7 @@ namespace Framework
         public static void OnTestFailure()
         {
             TakeScreenshotIfTestFails();
-            Log.Info("TestFailure");
+            Log.Error("TestFailure");
         }
 
         public static void OnTestSuccess()

@@ -20,7 +20,6 @@ namespace Framework.Test
         public void OpenBrowser()
         {
             Driver = DriverSingleton.GetDriver();
-            XmlConfigurator.Configure();
         }
 
         [TearDown]

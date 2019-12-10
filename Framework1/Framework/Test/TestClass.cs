@@ -92,10 +92,7 @@ namespace Framework.Test
             PlanningPage planningPage = new HomePage(Driver)
                 .CookieAcceptClick()
                 .GoToPlanningPage();
-
-            Log.Info("ChecklPlanningPage");
-
-            Assert.AreNotEqual(planningPage.GetUrl(), PlanningPageUrl);
+            Assert.AreEqual(planningPage.GetUrl(), PlanningPageUrl);
         }
 
         [Test]

@@ -15,6 +15,7 @@ namespace Framework.PageObject
         private IWebDriver Driver;
 
         private readonly string Url = "https://www.virginaustralia.com/eu/en/";
+        private static ILog Log = LogManager.GetLogger(typeof(TestListener));
 
         [FindsBy(How = How.XPath, Using = "//button[@id = 'cookieAcceptButton']")]
         private IWebElement CookieAcceptButton;
@@ -98,18 +99,21 @@ namespace Framework.PageObject
         public HomePage CookieAcceptClick()
         {
             CookieAcceptButton.Click();
+            Log.Info("CookieAcceptClick");
             return this;
         }
 
         public HomePage CheckInButtonClick()
         {
             CheckInButton.Click();
+            Log.Info("CheckInButtonClick");
             return this;
         }
 
         public PlanningPage GoToPlanningPage()
         {
             PlanningButton.Click();
+            Log.Info("PlanningPageButtonClick");
             return new PlanningPage(Driver);
         }
 
@@ -122,6 +126,7 @@ namespace Framework.PageObject
         public HelpPage GoToHelpPage()
         {
             HelpButton.Click();
+            Log.Info("Go To HelpPage");
             return new HelpPage(Driver);
         }
 
