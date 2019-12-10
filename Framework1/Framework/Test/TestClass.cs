@@ -137,18 +137,18 @@ namespace Framework.Test
         [Test]
         public void EqualPreliminaryAndCurrentPrice()
         {
-                Route route = new RouteCreator().WithAllProperties();
-                HomePage homePage = new HomePage(Driver);
-                homePage.CookieAcceptClick();
-                PlanningPage planningPage = homePage.GoToPlanningPage();
-                BookAFlightPage bookAFlightPage =  planningPage.GoToBookAFlightPage();
-                bookAFlightPage.InputFlightsOriginAndDestinationSurrogate(route);
-                bookAFlightPage.OneWayRadioButtonClick();
-                SelectFlightsPage selectFlightsPage = bookAFlightPage.FindFlightsButtonClick();
-                selectFlightsPage.SelectFlightClick();
-                selectFlightsPage.SelectPriceClick();
-                selectFlightsPage.ContinueButtonClick();
-                Assert.AreEqual(selectFlightsPage.GetPreliminaryPrice(), selectFlightsPage.GetCurrentPrice());
+            Route route = new RouteCreator().WithAllProperties();
+            SelectFlightsPage selectFlightsPage = new HomePage(Driver)
+                .CookieAcceptClick()
+                .GoToPlanningPage()
+                .GoToBookAFlightPage()
+                .InputFlightsOriginAndDestinationSurrogate(route)
+                .OneWayRadioButtonClick()
+                .FindFlightsButtonClick()
+                .SelectFlightClick()
+                .SelectPriceClick()
+                .ContinueButtonClick();
+            Assert.AreEqual(selectFlightsPage.GetPreliminaryPrice(), selectFlightsPage.GetCurrentPrice());
         }
     }
 }

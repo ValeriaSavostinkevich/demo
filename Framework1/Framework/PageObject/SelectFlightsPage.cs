@@ -16,13 +16,13 @@ namespace Framework.PageObject
         [FindsBy(How = How.XPath, Using = "//div[@id = 'yui_3_1_2_3_157410097521915646']")]
         private IWebElement PreliminaryPrice;
 
-        [FindsBy(How = How.XPath, Using = "//div[@id='flight_0_700363315']//div")]
+        [FindsBy(How = How.XPath, Using = "//div[@class='content-holder lead-price']/div/div/div[2]")]
         private IWebElement SelectFlight;
 
-        [FindsBy(How = How.XPath, Using = "//td[@id='td - 0 - GW - 4']/div[@class='upsellSelectContent']/button")]
+        [FindsBy(How = How.XPath, Using = "//button[@class='booknow button paddingB2C translate wasTranslated']")]
         private IWebElement SelectPrice;
 
-        [FindsBy(How = How.XPath, Using = "//button[@id = 'btn-search']")]
+        [FindsBy(How = How.XPath, Using = "//input[@id = 'btn-search']")]
         private IWebElement ContinueButton;
 
         [FindsBy(How = How.XPath, Using = "//span[@class = 'prices-amount']")]
