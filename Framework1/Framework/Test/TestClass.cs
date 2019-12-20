@@ -39,7 +39,6 @@ namespace Framework.Test
             SelectFlightsPage selectFlightsPage =  homePage
                 .CookieAcceptClick()
                 .FindFlightsButtonClick();
-            Log.Info("CookieAcceptClick");
             Assert.AreEqual(homePage.GetPageDialogText(), ErrorTextForSearchWithoutEnteringInformation);
         }
 
@@ -78,24 +77,6 @@ namespace Framework.Test
         }
 
         [Test]
-        public void CheckHelpPage()
-        {
-            HelpPage helpPage = new HomePage(Driver)
-                .CookieAcceptClick()
-                .GoToHelpPage();
-            Assert.AreEqual(helpPage.GetUrlHelpPage(), HelpPageUrl);
-        }
-
-        [Test]
-        public void CheckPlanningPage()
-        {
-            PlanningPage planningPage = new HomePage(Driver)
-                .CookieAcceptClick()
-                .GoToPlanningPage();
-            Assert.AreEqual(planningPage.GetUrl(), PlanningPageUrl);
-        }
-
-        [Test]
         public void CheckFlightStatusWithoutInputInformation()
         {
             string PageDialogText = new HomePage(Driver)
@@ -117,21 +98,41 @@ namespace Framework.Test
                 .InputLastNameBookingReferenceAndOriginSurrogateCheckIn(userCreator.LastNameAndBookingReferenceProperties(), route.WithAllProperties())
                 .CheckInButtonClick();
 
-            string PageDialogText = home.GetAttributeErrorForm();
-            Assert.AreEqual(PageDialogText, "display: block;");
+            Assert.IsTrue(home.ErrorFormIsDisplayed());
         }
 
         [Test]
-        public void LogInWithIncorrectInformation()
+        public void SearchWithoutEnteringInformationOnSelectFlightPageTest()
         {
-            UserCreator userCreator = new UserCreator();
-            bool enabledErrorForm = new HomePage(Driver)
+            SelectFlightsPage selectFlightsPage = new HomePage(Driver)
                 .CookieAcceptClick()
-                .GoToLogInPage()
-                .InputVelocityNumberAndBookingReference(userCreator.LastNameVelocityNumberAndPasswordProperties())
-                .LogInButtonClick()
-                .ErrorFormIsEnabled();
-            Assert.IsTrue(enabledErrorForm);
+                .GoToPlanningPage()
+                .GoToBookAFlightPage()
+                .FindFlightsButtonClick();
+
+            Assert.IsTrue(selectFlightsPage.ErrorFormIsDisplayed());
+        }
+
+        [Test]
+        public void SearchHolidaysWithoutEnteringInformation()
+        {
+            HomePage homePage = new HomePage(Driver)
+                .CookieAcceptClick()
+                .GoToHolidays()
+                .FindHolidayClick();
+
+            Assert.IsTrue(homePage.ErrorFormIsDisplayed());
+        }
+
+        [Test]
+        public void SearchHolidayCarsWithoutEnteringInformation()
+        {
+            HomePage homePage = new HomePage(Driver)
+                .CookieAcceptClick()
+                .GoToCars()
+                .FindCarsClick();
+
+            Assert.IsTrue(homePage.ErrorFormIsDisplayed());
         }
 
         [Test]
@@ -142,13 +143,22 @@ namespace Framework.Test
                 .CookieAcceptClick()
                 .GoToPlanningPage()
                 .GoToBookAFlightPage()
-                .InputFlightsOriginAndDestinationSurrogate(route)
+                .InputDestinationSurrogate(route)
+                
+                .FlightDepartureDateClick()
+                .InputFlightDepartureDate()
                 .OneWayRadioButtonClick()
-                .FindFlightsButtonClick()
+                .FindFlightsButtonClick();
+
+            string currentPrice = selectFlightsPage.GetCurrentPrice();
+
+            string preliminaryPrice = selectFlightsPage
                 .SelectFlightClick()
                 .SelectPriceClick()
-                .ContinueButtonClick();
-            Assert.AreEqual(selectFlightsPage.GetPreliminaryPrice(), selectFlightsPage.GetCurrentPrice());
+                .ContinueButtonClick()
+                .GetPreliminaryPrice();
+
+            Assert.AreEqual(currentPrice, preliminaryPrice);
         }
     }
 }

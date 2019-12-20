@@ -13,20 +13,23 @@ namespace Framework.PageObject
         private IWebDriver Driver;
         private WebDriverWait Wait;
 
-        [FindsBy(How = How.XPath, Using = "//div[@id = 'yui_3_1_2_3_157410097521915646']")]
+        [FindsBy(How = How.XPath, Using = "//div[@class = 'cart-total-price total-bottom']/em[@class = 'total-price-container']/span/span/span[@class = 'prices-amount']")]
         private IWebElement PreliminaryPrice;
 
-        [FindsBy(How = How.XPath, Using = "//div[@class='content-holder lead-price']/div/div/div[2]")]
+        [FindsBy(How = How.XPath, Using = "//div[@class = 'leadPriceOption EV paddingb2c']/div")]
         private IWebElement SelectFlight;
-
-        [FindsBy(How = How.XPath, Using = "//button[@class='booknow button paddingB2C translate wasTranslated']")]
+        //booknow button paddingB2C translate wasTranslated lastBrand
+        [FindsBy(How = How.XPath, Using = "//div[@class = 'upsellSelectContent']/button[@class='booknow button paddingB2C translate wasTranslated']")]
         private IWebElement SelectPrice;
 
         [FindsBy(How = How.XPath, Using = "//input[@id = 'btn-search']")]
         private IWebElement ContinueButton;
 
-        [FindsBy(How = How.XPath, Using = "//span[@class = 'prices-amount']")]
+        [FindsBy(How = How.XPath, Using = "//div[@class = 'leadPriceOption EV paddingb2c']/div/div[2]/span/span/span[@class = 'prices-amount']")]
         private IWebElement CurrentPrice;
+
+        [FindsBy(How = How.XPath, Using = "//div[@class = 'ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable dialog-error']")]
+        private IWebElement ErrorForm;
 
         public SelectFlightsPage(IWebDriver driver)
         {
@@ -56,6 +59,11 @@ namespace Framework.PageObject
         {
             ContinueButton.Click();
             return this;
+        }
+
+        public bool ErrorFormIsDisplayed()
+        {
+            return ErrorForm.Displayed;
         }
 
         public string GetCurrentPrice()

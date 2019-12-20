@@ -62,18 +62,21 @@ namespace Framework.PageObject
         [FindsBy(How = How.XPath, Using = "//a[contains(., 'Help')]")]
         private IWebElement HelpButton;
 
-        [FindsBy(How = How.XPath, Using = "//dt[contains(., 'Flight status')]")]
+        [FindsBy(How = How.XPath, Using = "//dt[contains(., 'Flight status')]/a")]
         private IWebElement FlightStatus;
 
-        [FindsBy(How = How.XPath, Using = "//input[@value = 'CHECK FLIGHT']")]
+        [FindsBy(How = How.XPath, Using = "//div[@class = 'submit-button-container']/input[@value = 'CHECK FLIGHT']")]
         private IWebElement CheckFlightButton;
+
+        [FindsBy(How = How.XPath, Using = "//*[@id='flights-status-flight-number-flight-number']")]
+        private IWebElement FlightNumber;
 
         [FindsBy(How = How.XPath, Using = "//dt[contains(., 'Check-in')]")]
         private IWebElement CheckIn;
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='flights - checkin - form']/fieldset/div[6]")]
+        [FindsBy(How = How.XPath, Using = "//div[@class = 'submit-button-container']/input[@value = 'CHECK IN']")]
         private IWebElement CheckInButton;
-
+        
         [FindsBy(How = How.XPath, Using = "//input[@id = 'flights-checkin-last-name']")]
         private IWebElement CheckInLastName;
 
@@ -83,11 +86,24 @@ namespace Framework.PageObject
         [FindsBy(How = How.XPath, Using = "//input[@id = 'flights-checkin-originSurrogate']")]
         private IWebElement CheckInOriginSurrogate;
 
-        [FindsBy(How = How.XPath, Using = "//a[contains(., 'Help')]")]
+        [FindsBy(How = How.XPath, Using = "//li[@class = 'header-loginLnkVelocity']/a")] 
         private IWebElement LogIn;
 
-        [FindsBy(How = How.XPath, Using = "/html/body/div[12]']")]
+        [FindsBy(How = How.XPath, Using = "//div[@class = 'ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable dialog-error']")]
         private IWebElement ErorrForm;
+
+        [FindsBy(How = How.XPath, Using = "//a[@id='holidays-selector']")]
+        private IWebElement Holidays;
+
+        [FindsBy(How = How.XPath, Using = "//input[@id='holidays-submit']")]
+        private IWebElement FindHolidaysButton;
+
+        [FindsBy(How = How.XPath, Using = "//a[@id='cars-selector']")]
+        private IWebElement Cars;
+
+        [FindsBy(How = How.XPath, Using = "//input[@id='cars-submit']")]
+        private IWebElement FindCarsButton;
+
 
         public HomePage(IWebDriver driver)
         {
@@ -119,6 +135,7 @@ namespace Framework.PageObject
 
         public LogInPage GoToLogInPage()
         {
+            new WebDriverWait(Driver, TimeSpan.FromSeconds(10)).Until(ExpectedConditions.ElementIsVisible(By.XPath("//li[@class = 'header-loginLnkVelocity']/a")));
             LogIn.Click();
             return new LogInPage(Driver);
         }
@@ -148,6 +165,30 @@ namespace Framework.PageObject
             return this;
         }
 
+        public HomePage GoToHolidays()
+        {
+            Holidays.Click();
+            return this;
+        }
+
+        public HomePage FindHolidayClick()
+        {
+            FindHolidaysButton.Click();
+            return this;
+        }
+
+        public HomePage GoToCars()
+        {
+            Cars.Click();
+            return this;
+        }
+
+        public HomePage FindCarsClick()
+        {
+            FindCarsButton.Click();
+            return this;
+        }
+
         public SelectFlightsPage FindFlightsButtonClick()
         {
             FindFlightsButton.Click();
@@ -156,13 +197,9 @@ namespace Framework.PageObject
 
         public HomePage CheckFlightsButtonClick()
         {
+            new WebDriverWait(Driver, TimeSpan.FromSeconds(10)).Until(ExpectedConditions.ElementIsVisible(By.XPath("//div[@class = 'submit-button-container']/input[@value = 'CHECK FLIGHT']")));
             CheckFlightButton.Click();
             return this;
-        }
-
-        public string GetPageDialogText()
-        {
-            return PageDialog.Text;
         }
 
         public HomePage RetrieveButtonOnMyBookingsClick()
@@ -171,11 +208,29 @@ namespace Framework.PageObject
             return this;
         }
 
+        public HomePage OneWayRadioButtonClick()
+        {
+            OneWayRadioButton.Click();
+            return this;
+        }
+
+        public HomePage CustomFormSelectClick()
+        {
+            CustomFormSelect.Click();
+            return this;
+        }
+
+        public HomePage IncrementInfantsClick()
+        {
+            IncrementInfants.Click();
+            return this;
+        }
+
         public HomePage InputLastNameBookingReferenceAndOriginSurrogateCheckIn(User user, Route route)
         {
-            CheckInLastName.SendKeys(user.LastName);
+            CheckInOriginSurrogate.SendKeys(route.OriginSurrogate);
             CheckInBookingReference.SendKeys(user.BookingReference);
-            CheckInOriginSurrogate.SendKeys(route.OriginSurrogate + Keys.Enter);
+            CheckInLastName.SendKeys(user.LastName);
             return this;
         }
 
@@ -199,27 +254,9 @@ namespace Framework.PageObject
             return this;
         }
 
-        public HomePage OneWayRadioButtonClick()
-        {
-            OneWayRadioButton.Click();
-            return this;
-        }
-
         public bool FlightsReturnDateIsEnabled()
         {
             return FlightsReturnDate.Enabled;
-        }
-
-        public HomePage CustomFormSelectClick()
-        {
-            CustomFormSelect.Click();
-            return this;
-        }
-
-        public HomePage IncrementInfantsClick()
-        {
-            IncrementInfants.Click();
-            return this;
         }
 
         public string GetAttributeButtonInfants()
@@ -227,9 +264,14 @@ namespace Framework.PageObject
             return IncrementInfants.GetAttribute("style");
         }
 
-        public string GetAttributeErrorForm()
+        public string GetPageDialogText()
         {
-            return ErorrForm.GetAttribute("style");
+            return PageDialog.Text;
+        }
+
+        public bool ErrorFormIsDisplayed()
+        {
+            return ErorrForm.Displayed; ;
         }
     }
 }

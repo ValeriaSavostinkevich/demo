@@ -50,5 +50,10 @@ namespace Framework.PageObject
         {
             return ErrorForm.Enabled;
         }
+
+        public string GetUrl()
+        {
+            return this.Driver.Url;
+        }
     }
 }

@@ -13,7 +13,7 @@ namespace Framework.PageObject
         private IWebDriver Driver;
         private WebDriverWait Wait;
 
-        [FindsBy(How = How.XPath, Using = " //li[@id = 'tln-nav-1071']")]
+        [FindsBy(How = How.XPath, Using = " //li[@id = 'tln-nav-1071']/a")]
         private IWebElement BookAFlightButton;
 
         public PlanningPage(IWebDriver driver)
