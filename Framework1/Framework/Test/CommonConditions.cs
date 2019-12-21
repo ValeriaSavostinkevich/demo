@@ -15,16 +15,19 @@ namespace Framework.Test
     public class CommonConditions: TestListener
     {
         protected IWebDriver Driver;
+        private static ILog Log = LogManager.GetLogger(typeof(TestListener));
 
         [SetUp]
         public void OpenBrowser()
         {
             Driver = DriverSingleton.GetDriver();
+            Log.Info("OpenBrowser");
         }
 
         [TearDown]
         public void CloseBrowser()
         {
+            Log.Info("CloseBrowser");
             if (TestContext.CurrentContext.Result.Outcome == ResultState.Failure)
                 TestListener.OnTestFailure();
 

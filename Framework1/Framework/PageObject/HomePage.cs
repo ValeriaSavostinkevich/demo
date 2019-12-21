@@ -110,6 +110,7 @@ namespace Framework.PageObject
             this.Driver = driver;
             PageFactory.InitElements(driver, this);
             driver.Navigate().GoToUrl(Url);
+            Log.Info("GoToUrl");
         }
 
         public HomePage CookieAcceptClick()
