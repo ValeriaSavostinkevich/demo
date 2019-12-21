@@ -114,6 +114,7 @@ namespace Framework.PageObject
 
         public HomePage CookieAcceptClick()
         {
+            new WebDriverWait(Driver, TimeSpan.FromSeconds(10)).Until(ExpectedConditions.ElementIsVisible(By.XPath("//button[@id = 'cookieAcceptButton']")));
             CookieAcceptButton.Click();
             Log.Info("CookieAcceptClick");
             return this;
